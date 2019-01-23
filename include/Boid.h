@@ -21,7 +21,7 @@ public:
 
     struct BoidData
     {
-        // all these is a pod type
+        // all these are a pod type
         ngl::Vec3 pos;
         ngl::Vec3 dir;
         ngl::Vec3 scale;
