@@ -1,3 +1,5 @@
 # FlockingNGL
 
-Flocking Projectusing NGL
+Flocking Project using NGL
+
+Controls -> Cohesion, Separation using arrow up and down keys
