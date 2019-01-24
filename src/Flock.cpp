@@ -61,7 +61,8 @@ void Flock::separation()
         {
             m->dir.set(m[i].pos - m[i+1].pos);
             m->dir.normalize();
-            m->pos += m->dir;
+            if(m->dir.length() > 0)
+                m->pos += m->dir;
         }
     }
 }
@@ -73,14 +74,11 @@ void Flock::allignmentRandom()
 
     for(size_t i=0; i<m_boidCollection.size(); ++i)
     {
-       // ngl::Vec3 rndDir = rng->getRandomPoint(0.1f, 0.1f, 0.1f);
         for(auto &m:m_boidCollection[i])
         {
             m->dir += rng->getRandomPoint(0.1f, 0.1f, 0.1f);
             m->dir.normalize();
-            if(m->dir.length() > 0)
-                m->pos += m->dir;
-
+            m->pos += m->dir;
         }
     }
 }
@@ -96,9 +94,7 @@ void Flock::allignment()
         {
             m->dir += rndDir;
             m->dir.normalize();
-            if(m->dir.length() > 0)
-                m->pos += m->dir;
-
+            m->pos += m->dir;
         }
     }
 }
