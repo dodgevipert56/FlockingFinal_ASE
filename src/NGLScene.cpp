@@ -140,7 +140,7 @@ void NGLScene::paintGL()
             case Boid::BoidMeshType::CONE : prim->draw("cone"); break;
         }
     }
-    m_text->renderText(10,10,"'up arrow' for Separation, 'down arrow' for Cohesion");
+    m_text->renderText(10,10,"'up arrow' for Separation, 'down arrow' for Cohesion, Press and hold '<-' or '->' for allignment and allignment random, 'C' to Reset");
 }
 
 
@@ -157,19 +157,17 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
         m_win.spinYFace=0;
         m_modelPos.set(ngl::Vec3::zero()); break;
 
-    case Qt::Key_W : glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); break; // wireframe draw
-    case Qt::Key_S : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); break; // solid draw
     case Qt::Key_C : if(m_flock.m_boids.size()<=0) m_flock.m_boids.resize(100); spawnBoids(); break; // draw each time, even after all gone
     case Qt::Key_Down : m_flock.cohesion(); break;
     case Qt::Key_Up : m_flock.separation(); break;
-    case Qt::Key_A : m_flock.allignment(); break;
+    case Qt::Key_Left : m_flock.allignment(); break;
+    case Qt::Key_Right : m_flock.allignmentRandom(); break;
 
     default : break;
     }
 
     update();
 }
-
 
 void NGLScene::updateCollection()
 {
@@ -192,7 +190,6 @@ void NGLScene::timerEvent(QTimerEvent *_event)
 {
     updateCollection();
     m_flock.allignment();
-    //m_flock.limit();
     m_flock.lookAt();
 
     update();

@@ -29,7 +29,6 @@ public:
         ngl::Vec4 colour;
         BoidMeshType type;
 
-
         BoidData(const ngl::Vec3 &_pos, const ngl::Vec3 &_scale, // constructor intialisation
                  const ngl::Vec3 &_rot, const ngl::Vec4 &_colour,
                  BoidMeshType _type) :

@@ -28,34 +28,6 @@ void Flock::cohesion()
     }
 }
 
-void Flock::limit()
-{
-
-    ngl::Vec3 center;
-    ngl::Vec3 sep;
-
-    for(size_t i=0; i<m_boidCollection.size(); ++i)
-    {
-        for(auto m:m_boidCollection[i]) // all of the cones
-        {
-            center += m->pos;
-        }
-
-        center /= m_boidCollection[i].size();
-
-        for(auto m:m_boidCollection[i]) // all of the cones
-        {
-            sep = center - m->pos;
-
-            if(sep.length() > 50.0f)
-                m->pos -= m->dir;
-            else
-                m->pos += m->dir;
-        }
-
-    }
-}
-
 void Flock::lookAt()
 {
     const float pi = 3.14f;
@@ -80,7 +52,6 @@ void Flock::lookAt()
 }
 
 
-
 void Flock::separation()
 {
 
@@ -96,6 +67,24 @@ void Flock::separation()
 }
 
 
+void Flock::allignmentRandom()
+{
+    ngl::Random *rng = ngl::Random::instance();
+
+    for(size_t i=0; i<m_boidCollection.size(); ++i)
+    {
+       // ngl::Vec3 rndDir = rng->getRandomPoint(0.1f, 0.1f, 0.1f);
+        for(auto &m:m_boidCollection[i])
+        {
+            m->dir += rng->getRandomPoint(0.1f, 0.1f, 0.1f);
+            m->dir.normalize();
+            if(m->dir.length() > 0)
+                m->pos += m->dir;
+
+        }
+    }
+}
+
 void Flock::allignment()
 {
     ngl::Random *rng = ngl::Random::instance();
@@ -107,8 +96,10 @@ void Flock::allignment()
         {
             m->dir += rndDir;
             m->dir.normalize();
-            m->pos += m->dir;
+            if(m->dir.length() > 0)
+                m->pos += m->dir;
 
         }
     }
 }
+

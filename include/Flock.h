@@ -16,6 +16,7 @@ public:
 
     void lookAt();
     void allignment();
+    void allignmentRandom();
     void separation();
     void cohesion();
     void limit();
