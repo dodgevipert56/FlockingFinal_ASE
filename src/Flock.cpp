@@ -40,9 +40,9 @@ void Flock::lookAt()
             auto yaw = std::atan2(m->dir.m_x, m->dir.m_z); //finding the look at angle based on the direction headed
             yaw = yaw * (180.0f/pi);
 
-            float xz = sqrtf((m->dir.m_x * m->dir.m_x) + (m->dir.m_z * m->dir.m_z)); //getting the xz plane
+            float xzPlane = sqrtf((m->dir.m_x * m->dir.m_x) + (m->dir.m_z * m->dir.m_z)); //getting the xz plane
 
-            auto pitch = std::atan( m->dir.m_y / xz);
+            auto pitch = std::atan( m->dir.m_y / xzPlane);
             pitch = pitch * (180.0f/pi);
 
             m->rot.m_y = yaw;    //------- YAW
@@ -50,7 +50,6 @@ void Flock::lookAt()
         }
     }
 }
-
 
 void Flock::separation()
 {
@@ -61,7 +60,7 @@ void Flock::separation()
         {
             m->dir.set(m[i].pos - m[i+1].pos);
             m->dir.normalize();
-            if(m->dir.length() > 0)
+            if(m->dir.length() > 0.0f)
                 m->pos += m->dir;
         }
     }

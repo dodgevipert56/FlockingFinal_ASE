@@ -27,18 +27,18 @@ NGLScene::NGLScene(size_t _numMeshes)
     startTimer(10);
 }
 
-void NGLScene::addBoidClick(Boid::BoidMeshType _m)
+void NGLScene::addBoidClick(Boid::BoidMeshType cone)
 {
 
     ngl::Random *rng = ngl::Random::instance();
-    Boid::BoidData m;
+    Boid::BoidData boid;
 
-    m.pos = rng->getRandomPoint(60, 60, 60);
-    m.rot.m_y =rng->randomPositiveNumber(360.0f);
-    m.scale.set(1.0f, 1.0f, 1.0f);
-    m.colour = rng->getRandomColour4();
-    m.type = _m;
-    m_flock.m_boids.push_back(m);
+    boid.pos = rng->getRandomPoint(60, 60, 60);
+    boid.rot.m_y =rng->randomPositiveNumber(360.0f);
+    boid.scale.set(1.0f, 1.0f, 1.0f);
+    boid.colour = rng->getRandomColour4();
+    boid.type = cone;
+    m_flock.m_boids.push_back(boid);
 }
 
 void NGLScene::spawnBoids() // not const becuz it a mutate
@@ -68,7 +68,7 @@ void NGLScene::resizeGL(int _w , int _h)
 {
     m_win.width  = static_cast<int>( _w * devicePixelRatio() );
     m_win.height = static_cast<int>( _h * devicePixelRatio() );
-    m_project = ngl::perspective(75.0f, static_cast<float>(_w)/_h,
+    m_project = ngl::perspective(50.0f, static_cast<float>(_w)/_h,
                                0.5f, 10000.0f); //FOV , last are near and far clipping planes
 }
 
@@ -140,7 +140,7 @@ void NGLScene::paintGL()
             case Boid::BoidMeshType::CONE : prim->draw("cone"); break;
         }
     }
-    m_text->renderText(10,10,"'up arrow' for Separation, 'down arrow' for Cohesion, Press and hold '<-' or '->' for allignment and allignment random, 'C' to Reset");
+    m_text->renderText(10,10,"'up arrow' for Separation, 'down arrow' for Cohesion, Press and hold '<-' or '->' for allignment and allignment random, 'Space' to add Boids, 'C' to Reset");
 }
 
 
@@ -152,10 +152,10 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
   switch (_event->key())
   {
     case Qt::Key_Escape : QGuiApplication::exit(EXIT_SUCCESS); break;
-    case Qt::Key_Space :
-        m_win.spinXFace=0;
-        m_win.spinYFace=0;
-        m_modelPos.set(ngl::Vec3::zero()); break;
+    case Qt::Key_Space : addBoidClick(Boid::BoidMeshType::CONE); break;
+       // m_win.spinXFace=0;
+       // m_win.spinYFace=0;
+       // m_modelPos.set(ngl::Vec3::zero()); break;
 
     case Qt::Key_C : if(m_flock.m_boids.size()<=0) m_flock.m_boids.resize(100); spawnBoids(); break; // draw each time, even after all gone
     case Qt::Key_Down : m_flock.cohesion(); break;
